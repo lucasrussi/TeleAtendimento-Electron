@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styleLogin.css">
+    <title>Cadastro</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Cadastro</h2>
+        <form action="#">
+            <div class="input-field">
+                <input type="text" id="newLogin" placeholder="Digite sua conta">
+                <label for="nome">Novo Login</label>
+            </div>
+            <div class="input-field">
+                <input type="password" id="newPass" placeholder="Digite sua senha">
+                <label for="senha">Nova Senha</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="newNome" placeholder="Digite sua senha">
+                <label for="senha">Seu Nome</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="email" placeholder="Digite sua senha">
+                <label for="senha">Seu e-mail</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="key" placeholder="Digite sua senha">
+                <label for="senha">Chave de autenticação</label>
+            </div>
+            <div class="center">
+                <button onclick="createAccount()">Registrar</button>
+            </div>
+        </form>
+    </div>
+    <script src="../models/login.js"></script>
+</body>
+</html>

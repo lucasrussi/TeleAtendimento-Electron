@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <link rel="stylesheet" href="../style.css">
+    <link href='../models/main.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Prontuário</title>
+</head>
+
+<body>
+    <nav class="sidebar-navigation">
+        <ul style="margin: 0%;padding: 0%;">
+            <li>
+                <i class="fas fa-calendar-alt" id="calendario"></i>
+                <span class="tooltip">Calendário</span>
+            </li>
+            <li>
+                <i class="fas fa-address-book" id="fornecedores"></i>
+                <span class="tooltip">Fornecedores</span>
+            </li>
+            <li>
+                <i class="fas fa-cog" id="config"></i>
+                <span class="tooltip">Configuração</span>
+            </li>
+            <li>
+                <i class="fas fa-sign-out-alt" id="sair"></i>
+                <span class="tooltip">Sair</span>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid" style="background-color:whitesmoke;">
+        <div class="row">
+            <div class="col-4 shadow p-3 mb-5 bg-white rounded" id="HistoricoPaciente"
+                style=" margin: 1%;overflow-y: scroll;max-height: 720px; min-height:720px">
+                <h2 style="align-items: center;">Historico</h2>
+                <hr>
+
+            </div>
+            <div class="col-6 shadow p-3 mb-5 bg-white rounded" id="ProntuarioMedico" style=" margin: 1%;">
+                <h2>Prontuário</h2>
+                <textarea name="prontuarioMedico" id="relatorioProntuarioMedico"
+                    style="box-sizing:border-box;width:100%;resize:none;border: solid blue 2px;box-shadow: 3px 2px 2px #999;"
+                    id="prontuarioMedico" rows="40" placeholder="Insira aqui o prontuário do paciente"></textarea>
+            </div>
+            <div class="col" style="margin-top: 1%;">
+                <button class="btn btn-success btn-block" onclick="escolhaReceita()">Receituário</button>
+                <br>
+                <br>
+                <button class="btn btn-danger btn-block" onclick="confirmacaoEncerramento()">Encerrar consulta</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Modal confirmação de encerramento-->
+    <div class="modal fade" id="confirmacaoEncerramento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmação de encerramento</h5>
+                </div>
+                <div class="modal-body">
+                    <h5>Realmente deseja encerrar a consulta?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="$('#confirmacaoEncerramento').modal('hide')">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="encerrarConsulta()">Encerrar
+                        Consulta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Modal da escolha do receituário-->
+    <div class="modal fade" id="tipoReceita" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tipo da receita</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="padrao" name="flexRadioDefault" value="padrao">
+                        <label class="form-check-label" for="padrao">
+                            Padrão
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="controlEspecial" name="flexRadioDefault"
+                            value="controlEspecial">
+                        <label class="form-check-label" for="controlEspecial">
+                            Controle especial
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="escolhaFeita()">Próximo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Modal do receituário-->
+    <div class="modal fade" id="receituarioPadrao" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Receituário</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" id="printable">
+                        <div class="row" style="text-align:center;">
+                            <h3>Receituário médico</h3>
+                        </div>
+                        <div style="float: left;">
+                            <h3>Nome:</h3>
+                        </div>
+                        <div style="float: right; padding-right:10%;">
+                            <h3>Via:</h3>
+                        </div>
+                        <hr style="box-sizing: border-box; width: 100%; height:3px;">
+                        <textarea id="receituarioPaciente" rows="35"
+                            style="box-sizing:border-box;width:100%;resize:none;border: none;background-image: url(../timbreReceituario.png);background-repeat: no-repeat;background-position: center;margin: 0%;padding: 0%;font-size: 1.5rem;"></textarea>
+                        <div style="float: right;width: 30%;">
+                            <hr>
+                            <p style="text-align:center;">Assinatura</p>
+                        </div>
+                        <hr style="box-sizing: border-box; width: 100%; height:3px;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="imprimiReceituario()">Imprimir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Modal receituário controlado-->
+    <div class="modal fade" id="receituarioEspecial" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Receituário Especial</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" id="printable" style="margin: 0%;padding: 0%;">
+                        <div style=" border: 1px black solid; border-radius: 2px;">
+                            <h5>Identidade do emitente</h5>
+                            <hr>
+                            <label for="">Nome</label>
+                            <input type="text" class="form-control" id='title' placeholder="Nome">
+                            <div style="display: flex;margin-top: 1%">
+                                <label for="">CRM:</label>
+                                <input type="text" class="form-control" placeholder="CRM">
+                                <label for="">UF:</label>
+                                <input type="text" class="form-control" placeholder="UF">
+                                <label for="">Nº</label>
+                                <input type="text" class="form-control" placeholder="Numero">
+                            </div>
+                            <label for="">Endereço completo</label>
+                            <input type="text" class="form-control" placeholder="Endereço completo">
+                            <label for="">Cidade</label>
+                            <input type="text" class="form-control" placeholder="Cidade">
+                            <label for="">UF</label>
+                            <input type="text" class="form-control" placeholder="UF">
+                        </div>
+                        <div>
+                            <label for="">Nome do Paciente</label>
+                            <input type="text" class="form-control" placeholder="Nome do paciente">
+                            <label for="">Endereço</label>
+                            <input type="text" class="form-control" placeholder="Endereço completo">
+                            <label for="">Prescrição</label>
+                            <textarea name="" id="" rows="10" style="box-sizing:border-box;width:100%;resize:none;"
+                                id="receituarioPaciente"></textarea>
+                        </div>
+
+                        <div style="display: flex;">
+                            <div style="width: 50%;border: 1px black solid; border-radius: 2px;">
+                                <h5>Identificação do comprador</h5>
+                                <hr>
+                                <label for="">Nome</label>
+                                <input type="text" class="form-control">
+                                <div>
+                                    <label>Ident.</label>
+                                    <input type="text" class="form-control">
+                                    <label>Org. emissor</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <label>Endereço</label>
+                                <input type="text" class="form-control">
+                                <label>Cidade</label>
+                                <input type="text" class="form-control">
+                                <label>UF</label>
+                                <input type="text" class="form-control">
+                                <label>Telefone</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div style="width: 50%;border: 1px black solid; border-radius: 2px;">
+                                <h5>Identificação do fornecedor</h5>
+                                <hr>
+                                <div style="position: relative;top: 80%;transform: translateY(-80%);">
+                                    <p style="margin-left: 10%;">______________________________</p>
+                                    <p style="margin-left: 32%;">Assinatura</p>
+                                </div>
+                                <div style="position: relative;top: 40%;transform: translateY(-40%);">
+                                    <p>Data</p>
+                                    <p>___/___/______</p>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        onclick="imprimiReceituarioControlado()">Imprimir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal de exit-->
+    <div class="modal fade " id="exitprocess" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="../img/exit.svg" style="width: 100%;" height="100%" alt="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        onclick=" $('#exitprocess').modal('hide')">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="exit()">Sair</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
+    <script src="../models/redirectionMed.js"></script>
+    <script src="../models/prontuario.js"></script>
+    <script src="../models/functionProntuario.js"></script>
+</body>
+
+</html>

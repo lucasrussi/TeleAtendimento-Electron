@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styleLogin.css">
+    <title>Login Health Prime</title>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form action="#">
+            <div class="input-field">
+                <input type="text" id="login" placeholder="Digite sua conta">
+                <label for="nome">Login</label>
+            </div>
+            <div class="input-field">
+                <input type="password" id="pass" placeholder="Digite sua senha">
+                <label for="senha">Senha</label>
+            </div>
+            <div class="center">
+                <button onclick="signIn()">Entrar</button>
+            </div>
+        </form>
+        <div class="links">
+            <a href="#">
+                <p>Esqueceu a sua senha?</p>
+            </a>
+            <a href="./cadastro.html">
+                <p>Ainda não tem cadastro?</p>
+            </a>
+        </div>
+        
+    </div>
+    <script src="../models/login.js"></script>
+</body>
+
+</html>

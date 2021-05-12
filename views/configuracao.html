@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>configuração</object></title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="sidebar-navigation">
+        <ul style="margin: 0%;padding: 0%;">
+            <li>
+                <i class="fas fa-calendar-alt" id="calendario"></i>
+                <span class="tooltip">Calendário</span>
+            </li>
+            <li>
+                <i class="fas fa-address-book" id="fornecedores"></i>
+                <span class="tooltip">Fornecedores</span>
+            </li>
+            <li>
+                <i class="fas fa-cog" id="config"></i>
+                <span class="tooltip">Configuração</span>
+            </li>
+            <li>
+                <i class="fas fa-sign-out-alt" id="sair"></i>
+                <span class="tooltip">Sair</span>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-fluid" style="background-color:whitesmoke;">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1 style="text-align: center;">Configuração</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5 shadow p-3 mb-5 bg-white rounded">
+                <h2 style="text-align: center;">Assistente virtual</h2>
+                <hr>
+                <button type="button" class="btn btn-primary" onclick="habilitarcell()">
+                    Habilitar celular
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!--modal de falta de validação de celular-->
+    <div class="modal fade " id="faltaValidacao" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Leia o QRCode</h5>
+                </div>
+                <div class="modal-body" id='imagem'>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--celular já cadastrado-->
+    <div class="modal fade " id="celularReady" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Status da cadastro</h5>
+                </div>
+                <div class="modal-body">
+                    <h6>Celular já cadastrado nesse software, caso queira cadastrar outro celular porfavor desconecte o
+                        celular no proprio aplicativo do whatsap</h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        onclick=" $('#celularReady').modal('hide')">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--modal de carregamento-->
+    <div class="modal fade " id="aguarde" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Status da cadastro</h5>
+                </div>
+                <div class="modal-body">
+                    <img src="../img/aguarde.svg" style="width: 100%;" height="100%" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--modal de alterações salvas com sucesso-->
+    <div class="modal fade " id="altSalvas" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">alterações salvas com sucesso :D</h5>
+                </div>
+                <div class="modal-body">
+                    <img src="../img/altSalvas.svg" style="width: 100%;" height="100%" alt="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick=" $('#altSalvas').modal('hide')">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--modal de exit-->
+    <div class="modal fade " id="exitprocess" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="../img/exit.svg" style="width: 100%;" height="100%" alt="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        onclick=" $('#exitprocess').modal('hide')">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="exit()">Sair</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
+    <script src="../models/configuracao.js"></script>
+    <script src="../models/redirection.js"></script>
+</body>
+
+</html>

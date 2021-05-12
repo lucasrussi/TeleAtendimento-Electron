@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <title>Fornecedores</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="sidebar-navigation">
+        <ul style="margin: 0%;padding: 0%;">
+            <li>
+                <i class="fas fa-calendar-alt" id="calendario"></i>
+                <span class="tooltip">Calendário</span>
+            </li>
+            <li>
+                <i class="fas fa-address-book" id="fornecedores"></i>
+                <span class="tooltip">Agenda</span>
+            </li>
+            <li>
+                <i class="fas fa-cog" id="config"></i>
+                <span class="tooltip">Configuração</span>
+            </li>
+            <li>
+                <i class="fas fa-sign-out-alt" id="sair"></i>
+                <span class="tooltip">Sair</span>
+            </li>
+        </ul>
+    </nav>
+    <!--menu cadastro fornecedor-->
+    <div style="padding-left: 10%; padding-top: 2%; ">
+        <ul class="list-group list-group-horizontal">
+            <button type="button" class="btn btn-success" onclick="cadastro()">Novo fornecedor</button>
+        </ul>
+    </div>
+    <!--tabela-->
+    <div class="row justify-content-center">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Nome Fantasia</th>
+                    <th scope="col">CNPJ</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Detalhes</th>
+                </tr>
+            </thead>
+            <tbody id='tableFornecedores'>
+            </tbody>
+        </table>
+    </div>
+    <!--Cadastro de fornecedor-->
+    <div class="modal fade" id="cadastrarFornecedor" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Cadastro de fornecedores</h5>
+                </div>
+                <div class="modal-body">
+                    <span id="msg-cad"></span>
+                    <form>
+                        <div class="row row-cols-auto">
+                            <!--lado esquerdo-->
+                            <div class="col">
+                                <div class="form-row">
+                                    <label for="">Nome</label>
+                                    <input type="text" class="form-control" id='nome' placeholder="Nome da empresa">
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <label for="">Nome fantasia</label>
+                                    <input type="text" class="form-control" id='nomeFantasia'
+                                        placeholder="Nome fantasia">
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <label for="">CNPJ</label>
+                                    <input type="text" class="form-control" id='cnpj' placeholder="CNPJ">
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <label for="">Telefone</label>
+                                    <input type="text" class="form-control" id='telefone' placeholder="Telefone">
+                                </div>
+                                <br>
+                            </div>
+                            <div class="col">
+                                <!--lado direito-->
+                                <div class="form-row">
+                                    <label for="">Endereço</label>
+                                    <input type="text" class="form-control" id='endereco'
+                                        placeholder="Endereço da empresa">
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <label for="">Bairro</label>
+                                    <input type="text" class="form-control" id='bairro' placeholder="Bairro da empresa">
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <label for="">Cidade</label>
+                                    <input type="text" class="form-control" id='cidade' placeholder="Cidade da empresa">
+                                </div>
+                                <br>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-block" id="CadEvent" value="CadEvent"
+                        onclick="cadastro_fornecedor()">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal do fornecedor selecionado-->
+    <div class="modal fade" id="DetalhesFornecedor" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Detalhes do fornecedor</h5>
+                </div>
+                <div class="modal-body">
+                    <span id="msg-cad"></span>
+                    <form>
+                        <div class="col">
+                            <div class="form-row">
+                                <label for="nomeFornecedor">Nome</label>
+                                <h1 type="text" name="nomeFornecedor" class="form-control" id="nomeFornecedor"></h1>
+                            </div>
+                            <div class="form-row">
+                                <label for="nomeFantasia">Nome Fantasia</label>
+                                <h1 type="text" name="nomeFantasia" class="form-control" id="nome_fantasia"></h1>
+                            </div>
+                            <div class="form-row">
+                                <label for="cnpj">CNPJ</label>
+                                <h1 type="text" name="cnpj" class="form-control" id="cnpj"></h1>
+                            </div>
+                            <div class="form-row">
+                                <label for="telefone">Telefone</label>
+                                <h1 type="text" name="telefone" class="form-control" id="telefone_fornecedor"></h1>
+                            </div>
+                            <div class="form-row">
+                                <label for="ruaFornecedor">Rua</label>
+                                <h1 type="text" name="ruaFornecedor" class="form-control" id="rua_fornecedor">
+                                </h1>
+                            </div>
+                            <div class="form-row">
+                                <label for="bairroFornecedor">Bairro</label>
+                                <h1 type="text" name="bairroFornecedor" class="form-control" id="bairro_fornecedor">
+                                </h1>
+                            </div>
+                            <div class="form-row">
+                                <label for="cidadeFornecedor">Cidade</label>
+                                <h1 type="text" name="cidadeFornecedor" class="form-control" id="cidade_fornecedor">
+                                </h1>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-block" id="excluir_fornecedor"
+                        value="excluir_fornecedor" onclick="excluir()">Excluir fornecedor</button>
+                    <button type="button" class="btn btn-success btn-block" id="historico" value="historico"
+                        onclick="abrirmotal_historico()">Historico</button>
+                    <button type="button" class="btn btn-success btn-block" id="adicionar_pedido"
+                        value="adicionar_pedido" onclick="abrirmodal_adicionar()">Incluir pedido</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal adicionar pedidos-->
+    <div class="modal fade" id="HistoricoPedidos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Incluir pedido</h5>
+                </div>
+                <div class="modal-body">
+                    <span id="msg-cad"></span>
+                    <form>
+                        <div class="col">
+                            <div class="form-row">
+                                <label for="nomeFornecedor">Nome do fornecedor</label>
+                                <h1 type="text" name="descricaoPedido" class="form-control" id="nomeFornecedor"></h1>
+                            </div>
+                            <div class="form-row">
+                                <label for="nomeFornecedor">Descrição do pedido</label>
+                                <textarea type="text" name="descricaoPedido" class="form-control" id="descricaoPedido"
+                                    placeholder="Insira os datalhes do pedido"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <label for="nomeFantasia">Data</label>
+                                <input type="text" name="nomeFantasia" class="form-control" id="dataFaturamento"
+                                    placeholder="Insira a data do faturamento"></input>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-block" id="adicionar_historico"
+                        value="adicionar_pedidos()" onclick="adicionar_pedidos()">Incluir pedidos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="HistoricoAmostra" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Historico</h5>
+                </div>
+                <div class="modal-body" style="overflow-y: scroll;max-height: 720px; min-height:720px" id="historicoRender">
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal de exit-->
+    <div class="modal fade " id="exitprocess" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="../img/exit.svg" style="width: 100%;" height="100%" alt="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        onclick=" $('#exitprocess').modal('hide')">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="exit()">Sair</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"></script>
+    <script src="../models/rendererFornecedores.js"></script>
+    <script src="../models/redirection.js"></script>
+</body>
+
+</html>
